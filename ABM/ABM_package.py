@@ -62,6 +62,149 @@ def ODE_sim(q,RHS,t,IC,description=None):
     return y
 
 
+def BDM_ABM(rp,rd,rm,T_end=5.0):
+
+    #number of lattice sites
+    n = 120
+
+    A = np.zeros((n**2,))
+
+    #initial proportions of occupied sires
+    A0 = 0.05
+    
+    #randomly place susceptible (1), infected (2), and recovered (3) agents
+    A_num = np.int(np.ceil(A0*len(A)))
+    A[:A_num] = 1
+    #shuffle up
+    A = A[np.random.permutation(n**2)]
+    #make square
+    A = A.reshape(n,n)
+
+    #count number of susceptible, infected, and recovered agents.
+    A_num = np.sum(A==1)
+
+    #nondimensionalized time
+    T_final = T_end/(rp-rd)
+
+    #initialize time
+    t = 0
+
+    #track time, agent proportions, and snapshots of ABM in these lists
+    t_list = [t]
+    A_list = [A_num]
+    plot_list = [A]
+    
+    #number of snapshots saved
+    image_count = 1
+
+
+    while t_list[-1] < T_final:
+
+        a = rm*(A_num) + rp*A_num + rd*A_num
+        
+        tau = -np.log(np.random.uniform())/a
+        t += tau
+
+        Action = a*np.random.uniform()
+
+        if Action <= rm*(A_num):
+            #agent movement
+            
+            # Select Random agent
+            agent_loc = np.where(A!=0)
+            agent_ind = np.random.permutation(len(agent_loc[0]))[0]
+            loc = (agent_loc[0][agent_ind],agent_loc[1][agent_ind])
+            
+            #determine status
+            agent_state = A[loc]
+
+            ### Determine direction
+            dir_select = np.ceil(np.random.uniform(high=4.0))
+
+            #move right
+            if dir_select == 1 and loc[0]<n-1:
+                if A[(loc[0]+1,loc[1])] == 0:
+                    A[(loc[0]+1,loc[1])] = agent_state
+                    A[loc] = 0
+            #move left
+            elif dir_select == 2 and loc[0]>0:
+                if A[(loc[0]-1,loc[1])] == 0:
+                    A[(loc[0]-1,loc[1])] = agent_state
+                    A[loc] = 0
+            #move up
+            elif dir_select == 3 and loc[1]<n-1:
+                if A[(loc[0],loc[1]+1)] == 0:
+                    A[(loc[0],loc[1]+1)] = agent_state
+                    A[loc] = 0
+
+            #move down                    
+            elif dir_select == 4 and loc[1]>0:
+                if A[(loc[0],loc[1]-1)] == 0:
+                    A[(loc[0],loc[1]-1)] = agent_state
+                    A[loc] = 0
+
+        elif (Action <= rm*(A_num) + rp*A_num):
+            #proliferation event
+            
+            # Select Random agent
+            agent_loc = np.where(A!=0)
+            agent_ind = np.random.permutation(len(agent_loc[0]))[0]
+            loc = (agent_loc[0][agent_ind],agent_loc[1][agent_ind])
+            
+            ### Determine direction
+            dir_select = np.ceil(np.random.uniform(high=4.0))
+
+            #proliferate right
+            if dir_select == 1 and loc[0]<n-1:
+                if A[(loc[0]+1,loc[1])] == 0:
+                    A[(loc[0]+1,loc[1])] = 1
+
+            #proliferate left
+            elif dir_select == 2 and loc[0]>0:
+                if A[(loc[0]-1,loc[1])] == 0:
+                    A[(loc[0]-1,loc[1])] = 1
+
+            #proliferate up        
+            elif dir_select == 3 and loc[1]<n-1:
+                if A[(loc[0],loc[1]+1)] == 0:
+                    A[(loc[0],loc[1]+1)] = 1
+
+            #proliferate down
+            elif dir_select == 4 and loc[1]>0:
+                if A[(loc[0],loc[1]-1)] == 0:
+                    A[(loc[0],loc[1]-1)] = 1
+
+        elif (Action <= rm*(A_num) + rp*A_num + rd*A_num):
+            #death event
+            
+            # Select Random agent
+            agent_loc = np.where(A!=0)
+            agent_ind = np.random.permutation(len(agent_loc[0]))[0]
+            loc = (agent_loc[0][agent_ind],agent_loc[1][agent_ind])
+            
+            A[loc] = 0
+
+        #count number of susceptible, infected, recovered agents
+        A_num = np.sum(A==1)
+        
+        #append information to lists
+        t_list.append(t)
+        A_list.append(A_num)
+        
+        #sometimes save ABM snapshot
+        if t_list[-2] < image_count*T_final/20 and t_list[-1] >= image_count*T_final/20:
+            plot_list.append(np.copy(A))
+            image_count+=1
+
+    #interpolation to equispace grid
+    t_out = np.linspace(0,T_final,100)
+
+    f = interpolate.interp1d(t_list,A_list)
+    A_out = f(t_out)
+
+    return A_out,t_out,plot_list
+
+
 def SIR_ABM(ri,rr,rm,T_end=5.0):
 
     #number of lattice sites
