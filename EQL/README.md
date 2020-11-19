@@ -8,4 +8,4 @@ Each case study can be run from the individual case study jupyter notebooks.
 
 The code for equation learning is found in PDEFind_class_online.py and PDE_FIND3.py.
 
-Helpful functions for DE model simulation are found in model_selection_IP3.pu
+Helpful functions for DE model simulation are found in model_selection_IP3.py
