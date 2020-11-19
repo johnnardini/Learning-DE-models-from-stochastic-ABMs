@@ -192,7 +192,10 @@ def BDM_ABM(rp,rd,rm,T_end=5.0):
         A_list.append(A_num)
         
         #sometimes save ABM snapshot
-        if t_list[-2] < image_count*T_final/20 and t_list[-1] >= image_count*T_final/20:
+        if len(t_list) == 2:
+            plot_list.append(np.copy(A))
+            image_count+=1
+        elif (t_list[-2] < image_count*T_final/50 and t_list[-1] >= image_count*T_final/50): 
             plot_list.append(np.copy(A))
             image_count+=1
 
