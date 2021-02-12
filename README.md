@@ -3,4 +3,4 @@
  
  The folders correspond to code for ABM simulation in ABM, DE Model Learning in EQL, and pre-saved data for the case studies in data.
  
- Please contact John Nardini at jtnardin@ncsu.edu if you have any questions, thank you.
+ Please contact John Nardini at jtnardin@ncsu.edu if you have any questions.
