@@ -203,7 +203,7 @@ def BDM_ABM(rp,rd,rm,T_end=5.0):
     t_out = np.linspace(0,T_final,100)
 
     f = interpolate.interp1d(t_list,A_list)
-    A_out = f(t_out)
+    A_out = f(t_out)/(n**2)
 
     return A_out,t_out,plot_list
 
