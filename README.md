@@ -1,5 +1,5 @@
 # Learning DE models for stochastic ABMs
- Code for "Learning differential equation models from stochastic agent-based model simulations," by John Nardini, Ruth Baker, Mat Simpson, and Kevin Flores. Article available at https://arxiv.org/abs/2011.08255 .
+ Code for "Learning differential equation models from stochastic agent-based model simulations," by John Nardini, Ruth Baker, Mat Simpson, and Kevin Flores. Article available at https://royalsocietypublishing.org/doi/full/10.1098/rsif.2020.0987 .
  
  All code is implemented using Python (version 3.7.3). The folders listed in this repository implement code to run agent-based models (ABMs), perform equation learning (EQL), or store previously-computed data from ABM simulations.
  
