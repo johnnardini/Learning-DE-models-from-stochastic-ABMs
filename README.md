@@ -9,4 +9,4 @@ The **EQL** folder contains code used to implement the EQL methods. We provide a
  
  The **data** folder contains pre-simulated and saved ABM output data. For the BDM process, the files are named as: "logistic_ABM_sim_rp_" + str(rp) + "\_rd\_" + str(rd) + "\_real" + str(N) + ".npy", where rp = {0.001,0.01, 0.05, 0.1, 0.5, 1} is the agent proliferation rate, rd = {rp, rp/2, rp/4} is the agent death rate, and N = { 1,10,15,25, 50 } is the number of ABM simulations over which we computed the averaged ABM data. For the SIR model, the files are named as: "SIR_ABM_ri_" + str(ri) + "\_ri\_" + str(rr) + "\_real" + str(N) + ".npy", where ri = {0.001, 0.005, 0.01, 0.05, 0.1, 0.25 } is the agent infection rate, rr = {ri, ri/4, ri/2 ri/10} is the agent recovery rate, and N = { 3,5,10,15,25, 50} is the number of ABM simulations over which we computed the averaged ABM data.
  
- Please contact John Nardini at jtnardin@ncsu.edu if you have any questions, thank you.
+ Please contact John Nardini at nardinij@tcnj.edu if you have any questions, thank you.
